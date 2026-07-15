@@ -1,0 +1,22 @@
+# 编译输出目录
+Debug/
+Release/
+
+# C/C++ 编译中间文件和目标文件
+*.o
+*.d
+*.out
+*.map
+*.hex
+*.bin
+
+# 链接器与环境配置文件
+device.opt
+device_linker.cmd
+device.cmd.genlibs
+Event.dot
+
+# IDE 与系统缓存文件 (如 VS Code/Theia 配置)
+.vscode/
+.history/
+*.tmp
