@@ -3,7 +3,7 @@
 <title>Static Call Graph - [new2\new2.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image new2\new2.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 6190004: Last Updated: Sat Jul 18 13:35:34 2026
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 6190004: Last Updated: Sat Jul 18 15:16:53 2026
 <BR><P>
 <H3>Maximum Stack Usage =        224 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -593,6 +593,7 @@ Global Symbols
 
 <P><STRONG><a name="[b0]"></a>AHRS_Get_Yaw</STRONG> (Thumb, 128 bytes, Stack size 0 bytes, ahrs.o(.text.AHRS_Get_Yaw))
 <BR><BR>[Called By]<UL><LI><a href="#[af]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Gimbal_Update
+<LI><a href="#[b1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Gimbal_Homing
 <LI><a href="#[ae]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Gimbal_1ms_Callback
 <LI><a href="#[f0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Vofa_Send_Callback
 </UL>
@@ -769,13 +770,10 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[10e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Main_Init
 </UL>
 
-<P><STRONG><a name="[9a]"></a>Chassis_Move_Calc</STRONG> (Thumb, 132 bytes, Stack size 32 bytes, chassis.o(.text.Chassis_Move_Calc))
-<BR><BR>[Stack]<UL><LI>Max Depth = 72<LI>Call Chain = Chassis_Move_Calc &rArr; __hardfp_atan2f &rArr; __set_errno
+<P><STRONG><a name="[9a]"></a>Chassis_Move_Calc</STRONG> (Thumb, 172 bytes, Stack size 16 bytes, chassis.o(.text.Chassis_Move_Calc))
+<BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = Chassis_Move_Calc
 </UL>
-<BR>[Calls]<UL><LI><a href="#[7d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_sinf
-<LI><a href="#[7c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_cosf
-<LI><a href="#[7b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_atan2f
-<LI><a href="#[a5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DR16_XiaoZhun
+<BR>[Calls]<UL><LI><a href="#[a5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DR16_XiaoZhun
 </UL>
 <BR>[Called By]<UL><LI><a href="#[99]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Chassis_1ms_Callback
 </UL>
@@ -808,7 +806,7 @@ Global Symbols
 <BR><BR>[Called By]<UL><LI><a href="#[99]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Chassis_1ms_Callback
 </UL>
 
-<P><STRONG><a name="[9b]"></a>Chassis_XiaoTuoLuo_Calc</STRONG> (Thumb, 144 bytes, Stack size 48 bytes, chassis.o(.text.Chassis_XiaoTuoLuo_Calc))
+<P><STRONG><a name="[9b]"></a>Chassis_XiaoTuoLuo_Calc</STRONG> (Thumb, 224 bytes, Stack size 48 bytes, chassis.o(.text.Chassis_XiaoTuoLuo_Calc))
 <BR><BR>[Stack]<UL><LI>Max Depth = 84<LI>Call Chain = Chassis_XiaoTuoLuo_Calc &rArr; __hardfp_sinf &rArr; __mathlib_rredf2
 </UL>
 <BR>[Calls]<UL><LI><a href="#[7d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_sinf
@@ -913,10 +911,11 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[e4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_TIM_PeriodElapsedCallback
 </UL>
 
-<P><STRONG><a name="[b1]"></a>Gimbal_Homing</STRONG> (Thumb, 208 bytes, Stack size 8 bytes, gimbal.o(.text.Gimbal_Homing))
+<P><STRONG><a name="[b1]"></a>Gimbal_Homing</STRONG> (Thumb, 228 bytes, Stack size 8 bytes, gimbal.o(.text.Gimbal_Homing))
 <BR><BR>[Stack]<UL><LI>Max Depth = 88<LI>Call Chain = Gimbal_Homing &rArr; PIDCompute &rArr; __aeabi_dmul
 </UL>
-<BR>[Calls]<UL><LI><a href="#[a6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PIDCompute
+<BR>[Calls]<UL><LI><a href="#[b0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AHRS_Get_Yaw
+<LI><a href="#[a6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PIDCompute
 </UL>
 <BR>[Called By]<UL><LI><a href="#[ae]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Gimbal_1ms_Callback
 </UL>
@@ -955,7 +954,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[ae]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Gimbal_1ms_Callback
 </UL>
 
-<P><STRONG><a name="[af]"></a>Gimbal_Update</STRONG> (Thumb, 84 bytes, Stack size 8 bytes, gimbal.o(.text.Gimbal_Update))
+<P><STRONG><a name="[af]"></a>Gimbal_Update</STRONG> (Thumb, 128 bytes, Stack size 8 bytes, gimbal.o(.text.Gimbal_Update))
 <BR><BR>[Stack]<UL><LI>Max Depth = 88<LI>Call Chain = Gimbal_Update &rArr; PIDCompute &rArr; __aeabi_dmul
 </UL>
 <BR>[Calls]<UL><LI><a href="#[a5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DR16_XiaoZhun
@@ -1979,7 +1978,6 @@ Global Symbols
 <LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__set_errno
 </UL>
 <BR>[Called By]<UL><LI><a href="#[80]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AHRS_Update
-<LI><a href="#[9a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Chassis_Move_Calc
 <LI><a href="#[7a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AHRS_Init_From_Accel
 </UL>
 
@@ -1992,7 +1990,6 @@ Global Symbols
 <LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__set_errno
 </UL>
 <BR>[Called By]<UL><LI><a href="#[9b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Chassis_XiaoTuoLuo_Calc
-<LI><a href="#[9a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Chassis_Move_Calc
 <LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AHRS_Reset_Yaw
 <LI><a href="#[7a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AHRS_Init_From_Accel
 </UL>
@@ -2008,7 +2005,6 @@ Global Symbols
 <LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__set_errno
 </UL>
 <BR>[Called By]<UL><LI><a href="#[9b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Chassis_XiaoTuoLuo_Calc
-<LI><a href="#[9a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Chassis_Move_Calc
 <LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AHRS_Reset_Yaw
 <LI><a href="#[7a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AHRS_Init_From_Accel
 </UL>

@@ -96,9 +96,9 @@ void Chassis_Rx_Callback(CAN_Rx_Buffer_t *rx)
     
     switch (rx->Header.StdId)
     {
-        case 0x201: Motor_Rx_Callback(&chassis.motor_chassis[LU], rx->Data); break;
-        case 0x202: Motor_Rx_Callback(&chassis.motor_chassis[LD], rx->Data); break;
-        case 0x203: Motor_Rx_Callback(&chassis.motor_chassis[RU], rx->Data); break;
+        case 0x201: Motor_Rx_Callback(&chassis.motor_chassis[RU], rx->Data); break;
+        case 0x202: Motor_Rx_Callback(&chassis.motor_chassis[LU], rx->Data); break;
+        case 0x203: Motor_Rx_Callback(&chassis.motor_chassis[LD], rx->Data); break;
         case 0x204: Motor_Rx_Callback(&chassis.motor_chassis[RD], rx->Data); break;
         default: break;
     }
@@ -117,20 +117,24 @@ void Chassis_Calc_Forward(float chassis_vx, float chassis_vy, float chassis_wz, 
 
 void Chassis_Move_Calc(void)
 {
-    chassis.vx = -DR16_XiaoZhun(DR16_Data.Left_Y)  * CHASSIS_MAX_V;
-    chassis.vy =  DR16_XiaoZhun(DR16_Data.Left_X)  * CHASSIS_MAX_V;
+    chassis.vx =  DR16_XiaoZhun(DR16_Data.Left_Y)  * CHASSIS_MAX_V;
+    chassis.vy = -DR16_XiaoZhun(DR16_Data.Left_X)  * CHASSIS_MAX_V;
 
     float gimbal_angle = gimbal.motor_6020.now_angle - gimbal.motor_6020.angle_offset;
-    gimbal_angle = atan2f(sinf(gimbal_angle), cosf(gimbal_angle));   // 最短路径
+    while(gimbal_angle >  PI) gimbal_angle -= 2.0f * PI;
+    while(gimbal_angle < -PI) gimbal_angle += 2.0f * PI;
     chassis.wz = gimbal_angle * CHASSIS_FOLLOW_KP;
 }
 
 void Chassis_XiaoTuoLuo_Calc(void)
 {
-    chassis.gimbal_vx = -DR16_XiaoZhun(DR16_Data.Left_Y) * CHASSIS_MAX_V;
-    chassis.gimbal_vy =  DR16_XiaoZhun(DR16_Data.Left_X) * CHASSIS_MAX_V;
+    chassis.gimbal_vx =  DR16_XiaoZhun(DR16_Data.Left_Y) * CHASSIS_MAX_V;
+    chassis.gimbal_vy = -DR16_XiaoZhun(DR16_Data.Left_X) * CHASSIS_MAX_V;
 
     float gimbal_angle = gimbal.motor_6020.now_angle - gimbal.motor_6020.angle_offset;
+
+    while(gimbal_angle >  PI) gimbal_angle -= 2.0f * PI;
+    while(gimbal_angle < -PI) gimbal_angle += 2.0f * PI;
     Gimbal_To_Chassis(chassis.gimbal_vx, chassis.gimbal_vy, gimbal_angle, &chassis.vx, &chassis.vy);
 }
 

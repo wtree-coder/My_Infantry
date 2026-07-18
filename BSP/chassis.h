@@ -25,11 +25,11 @@
 #define CHASSIS_KF               200
 
 typedef enum
-{
-    LU = 0,   //0x201
-    LD = 1,   //0x202
-    RU = 2,   //0x203
-    RD = 3,   //0x204
+{    
+    RU = 0,   //0x201
+    LU,   //0x202
+    LD,   //0x203
+    RD,   //0x204
 }Motor_Position;
 
 typedef enum

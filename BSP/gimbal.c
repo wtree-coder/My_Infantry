@@ -53,6 +53,7 @@ void Gimbal_Homing(void)
         {
             stable_cnt = 300;
             gimbal.motor_6020.angle_offset = gimbal.motor_6020.now_angle;
+            gimbal.target_yaw = -AHRS_Get_Yaw() * (PI / 180.0f);
             gimbal.mode = GIMBAL_DISABLE;
             return;
         }
@@ -73,8 +74,15 @@ void Gimbal_Homing(void)
 void Gimbal_Update(void)
 {
     gimbal.target_yaw += DR16_XiaoZhun(DR16_Data.Right_X) * 0.005f;
+
     float yaw_rad = AHRS_Get_Yaw() * (PI / 180.0f);
-    gimbal.motor_6020.target_rad_s = PIDCompute(&gimbal.pid_6020_angle, -yaw_rad, gimbal.target_yaw);
+    float target_rad_s = PIDCompute(&gimbal.pid_6020_angle, -yaw_rad, gimbal.target_yaw);
+    float limit = MOTOR_6020_MAX_RPM * RPM_TO_RADPS;
+
+    if(target_rad_s >  limit) target_rad_s =  limit;
+    if(target_rad_s < -limit) target_rad_s = -limit;
+    
+    gimbal.motor_6020.target_rad_s = target_rad_s;
 }
 
 void Gimbal_Shoot_Update(void)
