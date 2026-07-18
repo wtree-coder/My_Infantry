@@ -120,8 +120,6 @@ void Chassis_Move_Calc(void)
     chassis.vx = -DR16_XiaoZhun(DR16_Data.Left_Y)  * CHASSIS_MAX_V;
     chassis.vy =  DR16_XiaoZhun(DR16_Data.Left_X)  * CHASSIS_MAX_V;
 
-    if(gimbal.mode == GIMBAL_HOMING || gimbal.mode == GIMBAL_DISABLE) return;
-
     float gimbal_angle = gimbal.motor_6020.now_angle - gimbal.motor_6020.angle_offset;
     gimbal_angle = atan2f(sinf(gimbal_angle), cosf(gimbal_angle));   // 最短路径
     chassis.wz = gimbal_angle * CHASSIS_FOLLOW_KP;
@@ -140,18 +138,19 @@ void Mode_Choose(void)
 {
     if(DR16_Data.Chassis_Switch == DR16_SWITCH_UP)          chassis.mode = Chassis_XiaoTuoLuo;
     else if(DR16_Data.Chassis_Switch == DR16_SWITCH_MID)    chassis.mode = Chassis_Move;
-    else                                                  chassis.mode = Chassis_Disable;
+    else                                                    chassis.mode = Chassis_Disable;
 
     if(gimbal.mode != GIMBAL_HOMING)
     {
-        if(DR16_Data.Gimbal_Switch == DR16_SWITCH_UP)       gimbal.mode = GIMBAL_SHOOT;
-        else if(DR16_Data.Gimbal_Switch == DR16_SWITCH_MID) gimbal.mode = GIMBAL_MOVE;
+        if(DR16_Data.Gimbal_Switch == DR16_SWITCH_UP)        gimbal.mode = GIMBAL_SHOOT;
+        else if(DR16_Data.Gimbal_Switch == DR16_SWITCH_MID)  gimbal.mode = GIMBAL_MOVE;
         else                                                 gimbal.mode = GIMBAL_DISABLE;
     }
 }
 
 void Chassis_1ms_Callback(void)
 {
+    if(gimbal.mode == GIMBAL_HOMING) return;
     static float ramp_wz = 0.0f;
 
     if(chassis.mode == Chassis_Move)

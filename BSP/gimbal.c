@@ -23,8 +23,6 @@ void Gimbal_Check(void)
     Motor_Check(&gimbal.motor_6020);
     if(gimbal.motor_6020.is_ok)
     {
-        if(gimbal.motor_6020.angle_offset == 0.0f)
-            gimbal.motor_6020.angle_offset = gimbal.motor_6020.now_angle;
         gimbal.is_ok = 1;
     }
     else gimbal.is_ok = 0;
@@ -41,7 +39,7 @@ void Gimbal_Homing(void)
 
     if(!gimbal.is_ok)
     {
-        gimbal.motor_6020.target_rad_s = 0.0f;
+        gimbal.motor_6020.target_rad_s = 0.0f; //可有可无？
         stable_cnt = 0;
         return;
     }
@@ -54,8 +52,7 @@ void Gimbal_Homing(void)
         if(++stable_cnt >= 300)
         {
             stable_cnt = 300;
-            PID_Reset(&gimbal.pid_6020_angle);
-            gimbal.target_yaw = -AHRS_Get_Yaw() * (PI / 180.0f);
+            gimbal.motor_6020.angle_offset = gimbal.motor_6020.now_angle;
             gimbal.mode = GIMBAL_DISABLE;
             return;
         }
@@ -65,11 +62,11 @@ void Gimbal_Homing(void)
         stable_cnt = 0;
     }
 
-    float raw = PIDCompute(&gimbal.pid_6020_angle, gimbal.motor_6020.now_angle, home_angle);
+    float out = PIDCompute(&gimbal.pid_6020_angle, gimbal.motor_6020.now_angle, home_angle);
     float limit = MOTOR_6020_MAX_RPM * RPM_TO_RADPS * 0.5f;
-    if(raw >  limit) raw =  limit;
-    if(raw < -limit) raw = -limit;
-    gimbal.motor_6020.target_rad_s = raw;
+    if(out >  limit) out =  limit;
+    if(out < -limit) out = -limit;
+    gimbal.motor_6020.target_rad_s = out;
 }
 
 
